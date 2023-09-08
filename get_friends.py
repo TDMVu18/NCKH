@@ -69,11 +69,11 @@ if check_public == 'visible':
     num_of_loaded_friends = len(_get_friends_list())
     while True:
         driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-        try:
-            WebDriverWait(driver, 2).until(lambda driver: len(_get_friends_list()) > num_of_loaded_friends)
-            num_of_loaded_friends = len(_get_friends_list())
-        except TimeoutException:
-            break  # no more friends loaded
+        time.sleep(5)
+        new_height = driver.execute_script("return document.body.scrollHeight")
+        if new_height == last_height:
+            break
+        last_height = new_height
     my_friend = driver.find_elements_by_css_selector(".x1iyjqo2.x1pi30zi [href]")
     friendsList = []
     urlList = []
