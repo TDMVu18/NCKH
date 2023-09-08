@@ -47,10 +47,8 @@ login(start_url)
 
 def friend_tab(url):
     url = url
-    driver.get(url)
+    driver.get(url + '/friends')
     driver.maximize_window()
-    friendsTab = driver.find_element(By.XPATH,"//span[text()='Bạn bè']")
-    friendsTab.click()
     driver.execute_script("window.scrollTo(0, 500)") #Scroll down đến khi thấy tag friend ? 
     test_friend = WebDriverWait(driver, 2).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[1]/div/div[1]/div/div[3]/div/div/div/div[1]/div[1]/div/div/div[4]/div/div/div/div/div/div/div/div/div[2]/div/div/div/div[2]/a[1]")))
     abc = test_friend.get_attribute("href")
