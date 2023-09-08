@@ -9,7 +9,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import re
 
-#ghi chú
+#Option Chrome Driver ~
 
 option = Options()
 option.add_argument("--disable-infobars")
@@ -19,10 +19,10 @@ option.add_experimental_option(
     "prefs", {"profile.default_content_setting_values.notifications": 1}
 )
 
-#setup
+#set up
 
 start_url = 'https://www.facebook.com'
-profile_url = 'https://www.facebook.com/jijivishaphuoc'
+profile_url = 'https://www.facebook.com/jijivishaphuoc' #url truyền vào, lấy từ người thả react, crawl bạn bè của nó
 PATH = "driver\chromedriver.exe"
 driver = webdriver.Chrome(chrome_options=option, executable_path=PATH)
 
@@ -42,50 +42,8 @@ def login(url):
 
 login(start_url)
 
-#infor DatVilla
-
-# def get_about_place(url):
-#     url = url + '/about_places'    
-#     driver.get(url)
-#     driver.maximize_window()
-#     # place = driver.find_element(By.XPATH, "//span[@class = 'xt0psk2']").text
-#     place = WebDriverWait(driver, 2).until(
-#         EC.presence_of_element_located((By.XPATH, "//span[@class = 'xt0psk2']"))
-#     ).text
-#     return place
-
-# def get_gender(url):
-#     url = url + '/about_contact_and_basic_info'
-#     driver.get(url)
-#     driver.maximize_window()
-#     try:
-#         # gender = driver.find_element(By.XPATH, "//div[@class='x1hq5gj4']/div/div/div[2]/div/div/div/div/div/span").text
-#         gender = WebDriverWait(driver, 2).until(
-#             EC.presence_of_element_located((By.XPATH, "//div[@class='x1hq5gj4']/div/div/div[2]/div/div/div/div/div/span"))
-#         ).text
-#     except:
-#         gender = None
-#     return gender
-
-# def get_date_of_birth(url):
-#     url = url + '/about_contact_and_basic_info'
-#     driver.get(url)
-#     driver.maximize_window()
-#     try:
-#         # date_month = driver.find_element(By.XPATH, "//div[@class = 'x1hq5gj4']/../div[3]/div/div/div[2]/div/div/div/div/div/span").text
-#         date_month = WebDriverWait(driver, 2).until(
-#             EC.presence_of_element_located((By.XPATH, "//div[@class = 'x1hq5gj4']/../div[3]/div/div/div[2]/div/div/div/div/div/span"))
-#         ).text
-#         year = WebDriverWait(driver, 2).until(
-#             EC.presence_of_element_located((By.XPATH, "//div[@class = 'x1hq5gj4']/../div[3]/div/div/div[2]/div[2]/div/div/div/div/span"))
-#         ).text
-#     except:
-#         date_month = None
-#         year = None
-#     return date_month, year
-
-
-#if visible
+#if visible: có tag friend mới lấy, k thì thôi :v
+#hiện chưa nghĩ ra nên làm gì vào nếu ko hiện friend, bỏ qua ? đếm friend ?
 
 def friend_tab(url):
     url = url
@@ -93,7 +51,7 @@ def friend_tab(url):
     driver.maximize_window()
     friendsTab = driver.find_element(By.XPATH,"//span[text()='Bạn bè']")
     friendsTab.click()
-    driver.execute_script("window.scrollTo(0, 500)")
+    driver.execute_script("window.scrollTo(0, 500)") #Scroll down đến khi thấy tag friend ? 
     test_friend = WebDriverWait(driver, 2).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[1]/div/div[1]/div/div[3]/div/div/div/div[1]/div[1]/div/div/div[4]/div/div/div/div/div/div/div/div/div[2]/div/div/div/div[2]/a[1]")))
     abc = test_friend.get_attribute("href")
     match = re.search(r'friends_all$', abc)
@@ -130,32 +88,13 @@ if check_public == 'visible':
 
     newurlList = urlList[3:] 
     newfriendList = friendsList[3:]
-    # placeList = []
-    # genderList = []
-    # dateList = []
-    # yearList = []
-
-    # for target in newurlList:
-    #     place = get_about_place(target)
-    #     gender = get_gender(target)
-    #     date_of_birth = get_date_of_birth(target)[0]
-    #     year = get_date_of_birth(target)[1]
-    #     print(place)
-    #     print(gender)
-    #     print(date_of_birth)
-    #     print(year)
-    #     placeList.append(place)
-    #     genderList.append(gender)
-    #     dateList.append(date_of_birth)
-    #     yearList.append(year)
-
-
+   
 else:
     print("bruhhh")
 
 
 #join dataframe
-
+# thông tin của 1 cá nhân (name, birthday, gender, friend number(if visible), place) ?
 
 
 
