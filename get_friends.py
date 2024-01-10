@@ -23,7 +23,7 @@ option.add_experimental_option(
 
 start_url = 'https://www.facebook.com'
 profile_url = 'https://www.facebook.com/profile.php?id=100008402384102'
-PATH = "./chromedriver.exe"
+PATH = "driver/chromedriver.exe"
 driver = webdriver.Chrome(chrome_options=option, executable_path=PATH)
 
 #def
@@ -44,18 +44,22 @@ login(start_url)
 
 #infor DatVilla
 
+
 def get_about_place(url):
-    url = url + '/about_places'    
+    url = url + '&sk=about_places'    
     driver.get(url)
     driver.maximize_window()
-    # place = driver.find_element(By.XPATH, "//span[@class = 'xt0psk2']").text
-    place = WebDriverWait(driver, 5).until(
-        EC.presence_of_element_located((By.XPATH, "//span[@class = 'xt0psk2']"))
-    ).text
+    try:
+        # place = driver.find_element(By.XPATH, "//span[@class = 'xt0psk2']").text
+        place = WebDriverWait(driver, 2).until(
+            EC.presence_of_element_located((By.XPATH, "//span[@class = 'xt0psk2']"))
+        ).text
+    except:     
+        place = None
     return place
 
 def get_gender(url):
-    url = url + '/about_contact_and_basic_info'
+    url = url + '&sk=about_contact_and_basic_info'
     driver.get(url)
     driver.maximize_window()
     try:
@@ -68,7 +72,7 @@ def get_gender(url):
     return gender
 
 def get_date_of_birth(url):
-    url = url + '/about_contact_and_basic_info'
+    url = url + '&sk=about_contact_and_basic_info'
     driver.get(url)
     driver.maximize_window()
     try:
@@ -93,8 +97,9 @@ def friend_tab(url):
     driver.maximize_window()
     friendsTab = driver.find_element(By.XPATH,"//span[text()='Bạn bè']")
     friendsTab.click()
+    xpathFriend = "/html/body/div[1]/div/div[1]/div/div[3]/div/div/div[1]/div[1]/div/div/div[4]/div/div/div/div[1]/div/div/div/div/div[2]/div/div/div/div[2]/a[1]"
     driver.execute_script("window.scrollTo(0, 500)")
-    test_friend = WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.XPATH, "/html/body/div[1]/div/div[1]/div/div[3]/div/div/div/div[1]/div[1]/div/div/div[4]/div/div/div/div/div/div/div/div/div[2]/div/div/div/div[2]/a[1]")))
+    test_friend = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, xpathFriend)))
     abc = test_friend.get_attribute("href")
     match = re.search(r'friends_all$', abc)
     if match is not None:
@@ -121,33 +126,33 @@ if check_public == 'visible':
     my_friend = driver.find_elements_by_css_selector(".x1iyjqo2.x1pi30zi [href]")
     friendsList = []
     urlList = []
-   
     for friend in my_friend:
+
         friendsList.append(friend.text)
         url = friend.get_attribute("href")
         urlList.append(url)
         print(friend.text, url)
+    print(len(urlList))
+    newurlList = urlList[3:] 
+    newfriendList = friendsList[3:]
+    placeList = []
+    genderList = []
+    dateList = []
+    yearList = []
 
-    # newurlList = urlList[3:] 
-    # newfriendList = friendsList[3:]
-    # placeList = []
-    # genderList = []
-    # dateList = []
-    # yearList = []
-
-    # for target in newurlList:
-    #     place = get_about_place(target)
-    #     gender = get_gender(target)
-    #     date_of_birth = get_date_of_birth(target)[0]
-    #     year = get_date_of_birth(target)[1]
-    #     print(place)
-    #     print(gender)
-    #     print(date_of_birth)
-    #     print(year)
-    #     placeList.append(place)
-    #     genderList.append(gender)
-    #     dateList.append(date_of_birth)
-    #     yearList.append(year)
+    for target in newurlList:
+        place = get_about_place(target)
+        gender = get_gender(target)
+        date_of_birth = get_date_of_birth(target)[0]
+        year = get_date_of_birth(target)[1]
+        print(place)
+        print(gender)
+        print(date_of_birth)
+        print(year)
+        placeList.append(place)
+        genderList.append(gender)
+        dateList.append(date_of_birth)
+        yearList.append(year)
 
 
 else:
